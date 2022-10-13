@@ -7,6 +7,8 @@ select
     main.id,
     main.uuid,
     main.location_geopoint,
+    main.location_geopoint::jsonb -> 'coordinates' -> 1 as latitude,
+    main.location_geopoint::jsonb -> 'coordinates' -> 0 as longitude,
 
     {%- for col in all_columns if col.name not in except_col_names %}
 
