@@ -1,16 +1,19 @@
+with recent_updates as (
+    select
+       location_geopoint as id,
+       max(submitted_at) as recent_submission
+    from {{source('ona_data','service_registration_form_update')}}
+    group by 1
+)
+
 select 
-    id,
+    main.id,
     uuid,
     start, 
     "end",
     today,
     username,
     location_details,
-    location_geopoint,
-    town_pull,
-    neigbourhood_pull,
-    location_name_pull,
-    location_type_pull,
     loc_act_types_health,
     loc_act_types_advice,
     loc_act_types_edu,
@@ -177,4 +180,6 @@ select
     submitted_at,
     api_ingested_at,
     db_stored_at
-from {{source('ona_data','service_registration_form_update')}}
+from recent_updates main
+left join {{source('ona_data','service_registration_form_update')}} srfu on 
+    main.id = srfu.location_geopoint and main.recent_submission = srfu.submitted_at
