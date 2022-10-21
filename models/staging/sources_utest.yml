@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+    - name: ona_data
+      database: unicef_cote_divoire
+      schema: ona_data  
+      tables:
+        - name: service_registration_form
+        - name: service_registration_form_update
