@@ -1,24 +1,51 @@
-{% set all_columns = adapter.get_columns_in_relation(
-    ref('stg_service_registration_form')
-) %}
-{% set except_col_names=["id", "uuid", "location_geopoint"] %}
-
 select 
-    main.id,
-    main.uuid,
-    main.location_geopoint,
-    main.location_geopoint::jsonb -> 'coordinates' -> 1 as latitude,
-    main.location_geopoint::jsonb -> 'coordinates' -> 0 as longitude,
-
-    {%- for col in all_columns if col.name not in except_col_names %}
-
-        coalesce(updates."{{ col.name|lower }}", main."{{ col.name|lower }}")  as "{{ col.name|lower }}"
-
-        {%- if not loop.last %}
-            ,
-        {% endif %}
-
-    {%- endfor %}
-
-from {{ ref('stg_service_registration_form') }} main
-left join {{ ref('recent_service_point_updates') }}  updates on updates.id::BIGINT = main.id
+    id,
+    uuid,
+    location_geopoint,
+    latitude,
+    longitude,
+    start, 
+    "end",
+    today,
+    username,
+    location_details,
+    label_t.label as town,
+    neigbourhood,
+    location_name,
+    label_ty.label as location_type,
+    label_ad.location_activity_types,
+    label_ad.health_offered,
+    label_ad.orientation_offered,
+    label_ad.education_offered,
+    label_ad.protection_offered,
+    label_ad.justice_offered,
+    youth_point_name,
+    youth_point_number,
+    youth_point_alt_number,
+    youth_point_email,
+    label_open.label as open_24_7,
+    open_days_hours,
+    label_op.open_monday,
+    label_op.open_tuesday,
+    label_op.open_wednesday,
+    label_op.open_thursday,
+    label_op.open_friday,
+    label_op.open_saturday,
+    label_op.open_sunday,
+    select_24_7,
+    location_number,
+    location_email,
+    instance_id,
+    api_ingested_at,
+    submission_review_status,
+    submission_review_comment,
+    submission_submitted_by,
+    modified_at,
+    submitted_at,
+    db_stored_at
+from {{ref('service_points')}} main
+left join {{ref('stg_service_point_labels')}} label_t on label_t.name = main.town
+left join {{ref('stg_service_point_labels')}} label_ty on label_ty.name = main.location_type
+left join {{ref('stg_service_point_labels')}} label_open on label_open.name = main.open_24_7
+left join {{ref('activity_details')}} label_ad on label_ad.id = main.id
+left join {{ref('operational_hours')}} label_op on label_op.id = main.id
