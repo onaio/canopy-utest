@@ -1,5 +1,5 @@
 select 
-    id,
+    main.id,
     uuid,
     location_geopoint,
     latitude,
@@ -43,7 +43,7 @@ select
     modified_at,
     submitted_at,
     db_stored_at
-from {{ref('service_points')}} main
+from {{ref('updated_registration_details')}} main
 left join {{ref('stg_service_point_labels')}} label_t on label_t.name = main.town
 left join {{ref('stg_service_point_labels')}} label_ty on label_ty.name = main.location_type
 left join {{ref('stg_service_point_labels')}} label_open on label_open.name = main.open_24_7
