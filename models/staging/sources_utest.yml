@@ -7,3 +7,6 @@ sources:
       tables:
         - name: service_registration_form
         - name: service_registration_form_update
+      schema: csv
+      tables:
+        - name: service_point_labels
