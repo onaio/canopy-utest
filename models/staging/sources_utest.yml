@@ -7,6 +7,7 @@ sources:
       tables:
         - name: service_registration_form
         - name: service_registration_form_update
+        - name: service_rating
     - name: csv
       database: unicef_cote_divoire
       schema: csv
