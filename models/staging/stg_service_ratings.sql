@@ -1,6 +1,6 @@
 select
     id,
-    location_geopoint as location_id,
+    location_geopoint::int as location_id,
     location_name,
     location_activity_types as activity_types,
     rating::integer,

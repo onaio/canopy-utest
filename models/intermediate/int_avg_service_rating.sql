@@ -3,7 +3,7 @@ with rating_metrics as (
 		location_id,
 		location_name,
 		sum(rating) as rating_sum,
-		count(distinct(location_id)) as rating_count
+		count(id) as rating_count
 	from {{ ref('stg_service_ratings') }} 
 	group by 1,2
 )

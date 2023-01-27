@@ -11,7 +11,7 @@ select
     location_details,
     label_t.label as town,
     neigbourhood,
-    location_name,
+    main.location_name,
     label_ty.label as location_type,
     label_ad.location_activity_types,
     label_ad.health_offered,
@@ -23,6 +23,7 @@ select
     youth_point_number,
     youth_point_alt_number,
     youth_point_email,
+    avg_rtg.avg_rating,
     label_open.label as open_24_7,
     open_days_hours,
     label_op.open_monday,
@@ -49,3 +50,4 @@ left join {{ref('stg_service_point_labels')}} label_ty on label_ty.name = main.l
 left join {{ref('stg_service_point_labels')}} label_open on label_open.name = main.open_24_7
 left join {{ref('activity_details')}} label_ad on label_ad.id = main.id
 left join {{ref('operational_hours')}} label_op on label_op.id = main.id
+left join {{ ref('int_avg_service_rating') }} avg_rtg on main.id = avg_rtg.location_id
