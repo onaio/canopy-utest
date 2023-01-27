@@ -23,6 +23,7 @@ select
     youth_point_number,
     youth_point_alt_number,
     youth_point_email,
+    avg_rating,
     open_24_7,
     open_days_hours,
     open_monday,
