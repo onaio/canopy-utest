@@ -6,7 +6,7 @@ select
 from (
 select
     id,
-    replace(jsonb_array_elements(activity_types)::varchar, '"', '') as eng
+    replace(jsonb_array_elements(location_activity_types)::varchar, '"', '') as eng
 from {{ref('stg_service_ratings')}}) main
 left join {{ref('stg_service_point_labels')}} label on label."name" = main.eng
 ), health as (
