@@ -8,7 +8,7 @@ with unnested_activities as(
 ), unnested_services as (select
     id,
     {% for service in  service_list %}
-        unnest(string_to_array({{service}}, ',')) as {{service}}
+        unnest(string_to_array({{service}}, ','))  as {{service}}
         {%- if not loop.last -%}
             ,
         {%- endif -%}       
@@ -19,19 +19,24 @@ with unnested_activities as(
             id,
             unnest(array[health_offered, orientation_offered, education_offered, protection_offered, justice_offered]) as services
         from unnested_services
+    ), unnested_reviews as (
+        select
+            rtg.id::int,
+            location_geopoint::int as location_id,
+            location_name,
+            act.location_activity_types as location_activity_types,
+            svc.services as rated_services,
+            rating,
+            gender,
+            age,
+            feedback,
+            submitted_at as submission_date
+        from {{ ref('stg_service_ratings') }} rtg
+        left join unnested_activities act on rtg.id = act.id
+        left join combined_services svc on rtg.id = svc.id
     )
 
-
 select
-    rtg.id::int,
-    location_geopoint::int as location_id,
-    location_name,
-    act.location_activity_types as location_activity_types,
-    coalesce(svc.services, '-') as rated_services,
-    rating,
-    gender,
-    feedback,
-    submitted_at as submission_date
-from {{ ref('stg_service_ratings') }} rtg
-left join unnested_activities act on rtg.id = act.id
-left join combined_services svc on rtg.id = svc.id
+    *
+from unnested_reviews
+where rated_services != '-' and rated_services notnull
