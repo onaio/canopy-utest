@@ -8,8 +8,11 @@ sources:
         - name: service_registration_form
         - name: service_registration_form_update
         - name: service_rating
+        - name: hotspot_utest
+        - name: hotspot_utest_form2
     - name: csv
       database: unicef_cote_divoire
       schema: csv
       tables:
         - name: service_point_labels
+        - name: hotspot_labels
