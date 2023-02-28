@@ -17,7 +17,7 @@ with main as (
         type_activity_hotspot,
         duplicate,
         today
-    from {{ ref('hotspot_population_type_unnested') }}
+    from {{ ref('hotspot_population_unnested') }}
 ),{% for type in  site_types %}
     {{type}}_label as (
     select
@@ -33,23 +33,6 @@ with main as (
     {%- endif -%}       
 {% endfor %}
 
-
--- physical_label as (
---     select
---         physical_site as eng,
---         label.label as physical_site
---     from main
---     left join {{ ref('stg_hotspot_labels') }} label on label."name" = main.physical_site
---     group by 1,2
--- ), virtual_label as (
---     select
---         virtual_site as eng,
---         label.label as virtual_site
---     from main
---     left join {{ ref('stg_hotspot_labels') }} label on label."name" = main.virtual_site
---     where label.list_name = 'virt'
---     group by 1,2
--- )
 
 select
     id,
