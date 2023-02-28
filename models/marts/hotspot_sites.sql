@@ -8,6 +8,7 @@ with {% for name in  list_name %}
         label.label as {{name}}
     from {{ ref('stg_hotspot_form1') }} main
     left join {{ ref('stg_hotspot_labels') }} label on label."name" = main.{{name}}
+    where list_name = '{{name}}'
     group by 1,2
     )
     {%- if not loop.last -%}
