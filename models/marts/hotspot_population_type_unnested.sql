@@ -22,6 +22,7 @@ with main as (
         label.label as population_type
     from main
     left join {{ ref('stg_hotspot_labels') }} label on label."name" = main.population_type
+    where label.list_name = 'population_type'
     group by 1,2
 )
 
