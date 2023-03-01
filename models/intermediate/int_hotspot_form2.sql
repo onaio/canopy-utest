@@ -2,6 +2,7 @@ select
     id,
     hotspot::int as hotspot_id,
     today,
+    age,
     theme_ccc_session as theme,
     no_test_distributed_phv as self_test_phv,
     no_test_distributed_female_partner as self_test_female_partner,
