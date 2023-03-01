@@ -7,7 +7,7 @@ select
     hspt.district,
     hspt.department,
     hspt.commune_prefecture,
-    hspt.population_type,
+    string_agg(hspt.population_type, ', ') as population_type,
     main.today,
     self_test_phv as phv,
     self_test_female_partner as female_partner,
@@ -20,3 +20,4 @@ select
     lube_gels as lube_gels
 from {{ ref('int_hotspot_form2') }} main
 left join {{ ref('hotspot_population_unnested') }} hspt on main.hotspot_id = hspt.id
+group by 1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,18,19
