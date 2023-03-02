@@ -13,7 +13,9 @@ with main as (
         today,
         duplicate,
         replace(jsonb_array_elements(population_type)::varchar, '"', '') as population_type,
-        replace(jsonb_array_elements(type_activity_hotspot)::varchar, '"', '') as type_activity_hotspot
+        replace(jsonb_array_elements(type_activity_hotspot)::varchar, '"', '') as type_activity_hotspot,
+        min_site_visits,
+        max_site_visits
     from {{ ref('hotspot_sites') }}
     where type_of_site = 'Physique'
 ), activity_label as (
@@ -50,9 +52,11 @@ select
     main.duplicate,
     pop.population_type as population_type,
     string_agg(pop_l.population_type, ', ') as population_type_list,
-    string_agg(act_l.type_activity_hotspot, ', ') as type_activity_hotspot
+    string_agg(act_l.type_activity_hotspot, ', ') as type_activity_hotspot,
+    min_site_visits,
+    max_site_visits
 from main
 left join {{ ref('hotspot_population_unnested') }} pop on main.id = pop.id
 left join population_label pop_l on main.population_type = pop_l.eng
 left join activity_label act_l on main.type_activity_hotspot = act_l.eng
-group by 1,2,3,4,5,6,7,8,9,10,11,12,13
+group by 1,2,3,4,5,6,7,8,9,10,11,12,13,16,17
