@@ -14,7 +14,7 @@ select
     self_test_male_partner as male_partner,
     self_test_female_child as female_child,
     self_test_male_child as male_child,
-    self_test_phv + self_test_female_partner + self_test_male_partner + self_test_female_child + self_test_male_child as self_test,
+    coalesce(self_test_phv,0) + coalesce(self_test_female_partner,0) + coalesce(self_test_male_partner,0) + coalesce(self_test_female_child,0) + coalesce(self_test_male_child,0) as self_test,
     male_condoms as male_condoms,
     female_condoms as female_condoms,
     lube_gels as lube_gels
