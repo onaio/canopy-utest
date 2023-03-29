@@ -36,6 +36,12 @@ select
     duplicate,
     min_site_visits,
     max_site_visits,
+    peak_hour_max_number_people_pc,
+    peak_day_max_number_people_pc,
+    peak_hour_max_number_people_jav,
+    peak_day_max_number_people_jav,
+    peak_hour_max_number_people_ud,
+    peak_day_max_number_people_ud,
     today
 from {{ ref('stg_hotspot_form1') }} main
 {% for name in  list_name %}
